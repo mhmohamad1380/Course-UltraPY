@@ -1,0 +1,70 @@
+{% load static %}
+
+<div id="header" class="mdk-header mdk-header--bg-dark bg-dark js-mdk-header mb-0"
+     data-effects="parallax-background waterfall" data-fixed data-condenses>
+    <div class="mdk-header__bg">
+        <div class="mdk-header__bg-front"
+             style="background-image: url({{ settings.background_picture.url }});"></div>
+    </div>
+    <div class="mdk-header__content justify-content-center">
+
+
+        <div class="navbar navbar-expand navbar-dark-dodger-blue bg-transparent will-fade-background"
+             id="default-navbar" data-primary>
+
+            <!-- Navbar toggler -->
+            <button class="navbar-toggler w-auto mr-16pt d-block rounded-0" type="button" data-toggle="sidebar">
+                <span class="material-icons">short_text</span>
+            </button>
+
+            <!-- Navbar Brand -->
+            <a href="/" class="navbar-brand mr-16pt">
+                <!-- <img class="navbar-brand-icon" src="assets/images/logo/white-100@2x.png" width="30" alt="Luma"> -->
+
+
+
+                <span class="d-none d-lg-block">{{ settings.name }}</span>
+            </a>
+
+            <ul style="direction: rtl" class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+                <li class="nav-item active">
+                    <a href="/" class="nav-link">خانه</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                       data-caret="false">دوره ها</a>
+                    <div class="dropdown-menu">
+                        <a href="/Courses-List" class="dropdown-item">دوره ها</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                       data-caret="false">حساب کاربری</a>
+                    <div class="dropdown-menu">
+                        {% if request.user.is_authenticated %}
+                            <a href="/Account/My-Courses" class="dropdown-item">دوره های من</a>
+                            <a href="/Favorites" class="dropdown-item">علاقه مندی ها</a>
+                            <a href="/logout?next={{ request.path }}" class="dropdown-item">خروج</a>
+                        {% else %}
+                            <a href="/Login" class="dropdown-item">ورود</a>
+                            <a href="/Register" class="dropdown-item">ثبت نام</a>
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
+
+
+        </div>
+
+        <div class="hero container page__container text-center text-md-left py-112pt">
+            <h2 class="text-white text-shadow">{{ settings.title }}</h2>
+            <p class="lead measure-hero-lead mx-auto mx-md-0 text-white text-shadow mb-48pt">{{ settings.caption }}</p>
+
+
+            <a href="/Courses-List" class="btn btn-lg btn-white btn--raised mb-16pt">لیست دوره ها</a>
+
+
+        </div>
+    </div>
+</div>
+

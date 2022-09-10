@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    {% include 'base/_headerreffrences.html' %}
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+    <style>
+        {% block style %}
+        {% endblock %}
+
+        @font-face {
+            font-family: Yekan ;
+            src: url("{% static 'assets/fonts/fontawesome-free/Yekan.eot' %}");
+            src: url("{% static 'assets/fonts/fontawesome-free/Yekan.woff' %}") format("woff");
+            src: url("{% static 'assets/fonts/fontawesome-free/Yekan.ttf' %}") format("truetype");
+        }
+
+        h2 {
+            font-family: Yekan !important;
+        }
+
+        div#header a, div.media-body a {
+            font-family: Yekan !important;
+        }
+
+        p {
+            font-family: Yekan !important;
+        }
+
+        div.flex small {
+            font-family: Yekan !important;
+        }
+
+        div.mb-32pt span.text {
+            font-family: Yekan !important;
+        }
+
+        li.nav-item span {
+            font-family: Yekan !important;
+        }
+
+        div.page-separator div {
+            font-family: Yekan !important;
+        }
+
+        .price_part {
+            font-family: Yekan !important;
+        }
+
+        .infos {
+            font-family: Yekan !important;
+        }
+    </style>
+</head>
+<body class="layout-sticky-subnav layout-default ">
+{% block content %}
+{% endblock %}
+{% include 'base/_footerreffrences.html' %}
+{% block script %}
+{% endblock %}
+</body>
+{% include 'base/messages.html' %}
+</html>

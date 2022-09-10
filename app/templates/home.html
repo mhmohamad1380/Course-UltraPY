@@ -1,0 +1,163 @@
+{% extends 'base/_MainLayout.html' %}
+{% load static %}
+{% block title %}Ultra PY{% endblock %}
+{% block content %}
+
+
+    <div class="preloader">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+
+    <!-- Header Layout -->
+    <div class="mdk-header-layout js-mdk-header-layout">
+
+        <!-- Header -->
+        {% include 'base/Header.html' %}
+        <!-- // END Header -->
+
+        <!-- Header Layout Content -->
+        <div class="mdk-header-layout__content page-content ">
+
+
+            <div class="bg-white border-bottom-2 py-16pt ">
+                <div class="container page__container">
+                    <div class="row align-items-center">
+                        <div class="d-flex col-md align-items-center border-bottom border-md-0 mb-16pt mb-md-0 pb-16pt pb-md-0">
+                            <div class="rounded-circle bg-primary w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
+                                <lord-icon
+                                        src="https://cdn.lordicon.com/mecwbjnp.json"
+                                        trigger="hover"
+                                        colors="primary:#ffffff,secondary:#ffffff"
+                                        stroke="80"
+                                        style="width:50px;height:50px">
+                                </lord-icon>
+                            </div>
+                            <div class="flex">
+                                <div style="font-family: Yekan"
+                                     class="card-title mb-4pt infos">{{ settings.feature_3 }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex col-md align-items-center border-bottom border-md-0 mb-16pt mb-md-0 pb-16pt pb-md-0">
+                            <div class="rounded-circle bg-primary w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
+                                <lord-icon
+                                        src="https://cdn.lordicon.com/huwchbks.json"
+                                        trigger="hover"
+                                        colors="primary:#ffffff,secondary:#ffffff"
+                                        stroke="80"
+                                        style="width:50px;height:50px">
+                                </lord-icon>
+                            </div>
+                            <div class="flex">
+                                <div style="font-family: Yekan" class="card-title mb-4pt infos">{{ settings.feature_2 }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex col-md align-items-center">
+                            <div class="rounded-circle bg-primary w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
+                                <lord-icon
+                                        src="https://cdn.lordicon.com/kbtmbyzy.json"
+                                        trigger="hover"
+                                        colors="primary:#ffffff,secondary:#ffffff"
+                                        stroke="100"
+                                        style="width:50px;height:50px">
+                                </lord-icon>
+                            </div>
+                            <div class="flex">
+                                <div style="font-family: Yekan"
+                                     class="card-title mb-4pt infos">{{ settings.feature_1 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="page-section border-bottom-2">
+                <div class="container page__container">
+                    <div class="page-separator">
+                        <div class="page-separator__text">بهترین دوره ها</div>
+                    </div>
+
+
+                    <div class="row card-group-row">
+
+                        {% for course in courses %}
+                            <div class="col-md-6 col-lg-4 col-xl-6 card-group-row__col">
+
+                                <div style="height: 350px"
+                                     class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                                     data-toggle="popover" data-trigger="click">
+
+
+                                    <a href="/Courses-List/{{ course.id }}/{{ course.get_absolute_url }}"
+                                       class="js-image" data-position="center"
+                                       data-height="auto" data-domfactory-upgraded="image"
+                                       style="display: block; position: relative; overflow: hidden; background-image: url({{ course.image.url }}); background-size: cover; background-position: center; height: 250px;">
+
+                                    </a>
+
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex">
+                                                <a class="card-title infos" style="font-size: large"
+                                                   href="/Courses-List/{{ course.id }}/{{ course.get_absolute_url }}">{{ course.name }}</a>
+                                                <small style="font-size: medium"
+                                                       class="infos text-50 font-weight-bold mb-4pt">{{ course.get_creator_fullname }}</small>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto d-flex align-items-center">
+                                                <span class="material-icons icon-16pt text-black-50 mr-4pt">access_time</span>
+                                                {% if course.total_duration > 0 %}
+                                                        <p class="flex text-black-50 lh-1 mb-0"><small
+                                                                style="font-size: medium"
+                                                                class="infos">{{ course.total_duration }} دقیفه منتشر شده </small></p>
+                                                    {% else %}
+                                                        <p class="flex text-black-50 lh-1 mb-0 infos"><small
+                                                                style="font-size: medium"
+                                                                class="infos">هنوز ویدیویی منتشر نشده است</small></p>
+                                                    {% endif %}
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <span class="material-icons icon-16pt text-black-50 mr-4pt">play_circle_outline</span>
+                                                <p class="flex text-black-50 lh-1 mb-0"><small
+                                                        style="font-size: medium">{{ course.videos_count }} درس منتشر
+                                                    شده</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- // END Header Layout Content -->
+
+
+        <!-- footer start -->
+        {% include 'base/Footer.html' %}
+        <!-- footer end -->
+
+
+    </div>
+    <!-- // END Header Layout -->
+
+
+    <!-- drawer -->
+    {% include 'base/drawer.html' %}
+    <!-- // END drawer -->
+
+
+{% endblock %}

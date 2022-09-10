@@ -1,0 +1,41 @@
+{% load static %}
+<!-- jQuery -->
+<script src="{% static 'assets/vendor/jquery.min.js' %}"></script>
+
+<!-- Bootstrap -->
+<script src="{% static 'assets/vendor/popper.min.js' %}"></script>
+<script src="{% static 'assets/vendor/bootstrap.min.js' %}"></script>
+
+<!-- Perfect Scrollbar -->
+<script src="{% static 'assets/vendor/perfect-scrollbar.min.js' %}"></script>
+
+<!-- DOM Factory -->
+<script src="{% static 'assets/vendor/dom-factory.js' %}"></script>
+
+<!-- MDK -->
+<script src="{% static 'assets/vendor/material-design-kit.js' %}"></script>
+<script src="https://static.idpay.ir/trust.js?id=84389428&width=64"></script>
+<!-- Fix Footer -->
+<script src="{% static 'assets/vendor/fix-footer.js' %}"></script>
+<script src="https://cdn.lordicon.com/libs/mssddfmo/lord-icon-2.1.0.js"></script>
+<!-- App JS -->
+<script src="{% static 'assets/js/app.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+    (function () {
+        'use strict';
+        var headerNode = document.querySelector('.mdk-header')
+        var layoutNode = document.querySelector('.mdk-header-layout')
+        var componentNode = layoutNode ? layoutNode : headerNode
+
+        componentNode.addEventListener('domfactory-component-upgraded', function () {
+            headerNode.mdkHeader.eventTarget.addEventListener('scroll', function () {
+                var progress = headerNode.mdkHeader.getScrollState().progress
+                var navbarNode = headerNode.querySelector('#default-navbar')
+                navbarNode.classList.toggle('bg-transparent', progress <= 0.2)
+            })
+        })
+    })()
+</script>

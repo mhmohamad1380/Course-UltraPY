@@ -1,0 +1,544 @@
+{% extends 'base/_MainLayout.html' %}
+{% load render_partial %}
+{% block title %}
+    دوره  {{ course.name }}
+{% endblock %}
+{% block head %}
+    {{ form.media }}
+    <meta name="topic" content="{{ course.name }}"/>
+
+    <meta name="Classification" content="Programming"/>
+    <meta name="keywords" content="{{ course.tags }}"/>
+
+    <meta name="description" content="{{ course.about_course }}"/>
+
+    <meta name="subject" content="{{ course.name }} / آموزش های پایتونی در آلتراپای"/>
+
+    <style>
+        .dbutton {
+            left: 5px;
+            border: 2px solid lightgreen;
+            border-radius: 3rem;
+            color: lightgreen;
+            font-weight: 100;
+            overflow: hidden;
+            padding: 5px 10px;
+            position: relative;
+            text-decoration: none;
+            transition: .2s transform ease-in-out;
+            will-change: transform;
+            z-index: 0;
+        }
+
+
+        .dbutton::after {
+            background-color: lightgreen;
+            border-radius: 3rem;
+            content: '';
+            display: block;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translate(-100%, 0) rotate(10deg);
+            transform-origin: top left;
+            transition: .2s transform ease-out;
+            will-change: transform;
+            z-index: -1;
+        }
+
+        .dbutton:hover::after {
+            transform: translate(0, 0);
+        }
+
+
+    </style>
+{% endblock %}
+{% block content %}
+    {% include 'base/Header_other.html' %}
+
+    <div class="mdk-header-layout__content page-content " style="padding-top: 64px;">
+
+
+        <div class="navbar navbar-expand-sm navbar-light bg-white border-bottom-2 navbar-list p-0 m-0 align-items-center">
+            <div class="container page__container">
+
+                <ul class="nav navbar-nav flex align-items-sm-center">
+                    <li class="nav-item navbar-list__item">
+                        <div class="media align-items-center ">
+
+                            <div class="media-body">
+                                <a class="card-title m-0"
+                                   href="fixed-teacher-profile.html">{{ course.get_creator_fullname }}</a>
+                                <p class="text-50 lh-1 mb-0">ایجاد کننده دوره</p>
+                                <hr>
+
+                                {% if is_fav == False %}
+                                    <a href="/AddtoFavorite/{{ course.id }}?next={{ request.get_full_path }}"
+                                       data-toggle="tooltip"
+                                       data-title="افزودن به علاقه مندی ها"
+                                       data-placement="top" data-boundary="window"
+                                       class="ml-4pt material-icons text-20 card-course__icon-favorite">
+                                        <lord-icon
+                                                src="https://cdn.lordicon.com/rjzlnunf.json"
+                                                trigger="hover"
+                                                colors="primary:#121331,secondary:#08a88a"
+                                                style="width:40px;height:40px">
+                                        </lord-icon>
+                                    </a>
+                                {% elif is_fav == True %}
+                                    <a href="/DeletefromFavorite/{{ course.id }}?next={{ request.get_full_path }}"
+                                       data-toggle="tooltip"
+                                       data-title="حدف علاقه مندی ها"
+                                       data-placement="top" data-boundary="window"
+                                       class="ml-4pt material-icons text-20 card-course__icon-favorite">
+                                        <lord-icon
+                                                src="https://cdn.lordicon.com/hdiorcun.json"
+                                                trigger="hover"
+                                                colors="primary:#121331,secondary:#08a88a"
+                                                style="width:50px;height:50px">
+                                        </lord-icon>
+                                    </a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="page-section border-bottom-2">
+            <div class="container page__container">
+
+                <div class="page-separator">
+                    <div class="page-separator__text">ستون جلسات ها</div>
+                </div>
+
+                <div class="row mb-0">
+                    <div class="col-lg-7">
+                        {% if request.user == course.creator %}
+                            <div style="margin-bottom: 10px;" onclick="accordions_add()"
+                                 class="accordion js-accordion accordion--boxed list-group-flush"
+                                 id="parent"
+                                 data-domfactory-upgraded="accordion">
+                                <div style="background-color: silver" class="accordion__item">
+                                    <a id="first-toggle-add" class="accordion__toggle collapsed"
+                                       data-toggle="collapse"
+                                       data-target="#course-toc-add" data-parent="#parent">
+                                        <p style="font-size: medium;position: relative;top: 5px"
+                                           class="flex infos">اضافه کردن فصل به دوره</p>
+                                        <span id="keyboard-arrow-add"
+                                              class="accordion__toggle-icon material-icons ">keyboard_arrow_up</span>
+                                    </a>
+
+                                    {% if request.user == course.creator %}
+                                        <div style="margin-bottom: 10px"
+                                             class="accordion__menu collapse text-center"
+                                             id="course-toc-add">
+                                            <hr>
+                                            <p>
+                                                <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                                        data-target="#collapseExample_add"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapseExample_add">
+                                                    اضافه کردن فصل به دوره
+                                                </button>
+                                            </p>
+                                            <div class="collapse" id="collapseExample_add">
+                                                <div style="margin: 10px" class="card card-body">
+                                                    <form method='post'
+                                                          action='/CreateSession/{{ course.id }}'>
+                                                        {% csrf_token %}
+                                                        <label class="infos" for="name_add">نام فصل</label>
+                                                        <input name="session_name" id="name_add"
+                                                               class='form-control'
+                                                               type='text'
+                                                               placeholder='نام فصل' required><br>
+                                                        <button class='btn btn-success infos' type='submit'>تایید
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+
+                        {% if sessions %}
+                            {% for session in sessions %}
+                                <div onclick="accordions_{{ session.id }}()"
+                                     class="accordion js-accordion accordion--boxed list-group-flush"
+                                     id="parent"
+                                     data-domfactory-upgraded="accordion">
+                                    {% if course.creator == request.user %}
+                                        <div>
+                                            <i onclick="delete_{{ session.id }}()" style="width: 20px;height: 20px"
+                                               data-toggle="tooltip"
+                                               data-title="حدف فصل" data-placement="right" class="bi bi-x-circle"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="accordion__item">
+                                        <a id="first-toggle-{{ session.id }}" class="accordion__toggle collapsed"
+                                           data-toggle="collapse"
+                                           data-target="#course-toc-{{ session.id }}" data-parent="#parent">
+                                            <p style="font-size: medium;position: relative;top: 5px"
+                                               class="flex infos">{{ session.session_title }}</p>
+
+                                            <span id="keyboard-arrow-{{ session.id }}"
+                                                  class="accordion__toggle-icon material-icons ">keyboard_arrow_up</span>
+                                        </a>
+                                        {% for video in videos %}
+                                            {% if video.session.id == session.id %}
+                                                <div class="accordion__menu collapse" id="course-toc-{{ session.id }}">
+                                                    <div class="accordion__menu-link">
+                                                        <!-- <span class="material-icons icon-16pt icon--left text-primary">play_circle_outline</span> -->
+                                                        <span class="icon-holder icon-holder--small icon-holder--dark rounded-circle d-inline-flex icon--left">
+                                                {% if video.is_free %}
+                                                    <i class="material-icons icon-16pt">play_circle_outline</i>
+                                                {% else %}
+                                                    <i class="material-icons icon-16pt">lock</i>
+                                                {% endif %}
+                                            </span>
+                                                        <p style="font-size: medium;position:relative;top: 5px"
+                                                           class="flex"
+                                                        >
+                                                            {{ video.title }}{% if video.is_free %}
+                                                                <span style="padding: 2px 4px;border-radius: 50px;margin-right: 10px;height: 3px;width: 7px"
+                                                                      class="infos bg badge-success">رایگان</span>
+                                                            {% endif %}</p>
+                                                        {% if not video.is_free %}
+                                                            {% if is_bought %}
+                                                                <a class="infos dbutton" style="height: 100%"
+                                                                   href="/downloadvideo/{{ video.id }}/course_id={{ course.id }}">دانلود</a>
+                                                            {% elif request.user == course.creator %}
+                                                                <a class="infos dbutton" style="height: 100%"
+                                                                   href="/downloadvideo/{{ video.id }}/course_id={{ course.id }}">دانلود</a>
+                                                            {% else %}
+                                                                <a class="infos dbutton" style="height: 100%"
+                                                                   href="/downloadvideo/{{ video.id }}/course_id={{ course.id }}">خرید</a>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <a class="infos dbutton" style="height: 100%"
+                                                               href="/downloadvideo/{{ video.id }}/course_id={{ course.id }}">دانلود</a>
+                                                        {% endif %}
+                                                        <span class="text-muted">{{ video.get_video_duration }}</span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if request.user == course.creator %}
+                                            <div style="margin-bottom: 10px"
+                                                 class="accordion__menu collapse text-center"
+                                                 id="course-toc-{{ session.id }}">
+                                                <hr>
+                                                <p>
+                                                    <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                                            data-target="#collapseExample_{{ session.id }}"
+                                                            aria-expanded="false"
+                                                            aria-controls="collapseExample_{{ session.id }}">
+                                                        اضافه کردن ویدیو به فصل
+                                                    </button>
+                                                </p>
+                                                <div class="collapse" id="collapseExample_{{ session.id }}">
+                                                    <div style="margin: 10px" class="card card-body">
+                                                        <form enctype="multipart/form-data" method='post'
+                                                              action='/UploadFile/{{ session.id }}/{{ course.id }}'>
+                                                            {% csrf_token %}
+                                                            <label class="infos" for="name_{{ session.id }}">نام
+                                                                ویدیو</label>
+                                                            <input name="filename" id="name_{{ session.id }}"
+                                                                   class='form-control'
+                                                                   type='text'
+                                                                   placeholder='نام ویدیو' required><br><input
+                                                                class='form-control' type='file' name='file'
+                                                                required
+                                                                accept="video/,.mkv,video/,.mp4,video/,.avi,video/,.zip"><br><label
+                                                                class='infos'
+                                                                for='checkbox_free_{{ session.id }}'>ویدیو
+                                                            رایگان است؟</label>
+                                                            <input id='checkbox_free_{{ session.id }}' type='checkbox'
+                                                                   name='is_free' value='true'><br>
+                                                            <button class='btn btn-success infos' type='submit'>تایید
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h2>دوره هنوز شروع نشده است</h2>
+                        {% endif %}
+
+                    </div>
+                    <div style="margin-top: 10px" class="col-lg-5 justify-content-center">
+
+
+                        <div class="card ">
+                            <div class="card-body py-16pt text-center">
+                                    <span class="icon-holder icon-holder--outline-secondary rounded-circle d-inline-flex mb-8pt">
+                                        <i class="material-icons">timer</i>
+                                    </span><br>
+                                <h4 class="card-title price_part"><strong>خرید
+                                    دوره</strong></h4>
+                                <p class="card-subtitle text-70 mb-24pt price_part">دسترسی به همه ی ویدیو های این
+                                    دوره</p>
+                                <div style="font-size: medium">
+                                    {% if course.is_done == False %}
+                                        <lord-icon
+                                                src="https://cdn.lordicon.com/jvihlqtw.json"
+                                                trigger="hover"
+                                                colors="primary:#121331,secondary:#08a88a"
+                                                style="width:25px;height:25px">
+                                        </lord-icon>
+                                        <span style="font-weight: bold"
+                                              class="infos">  وضعیت دوره : در حال برگزاری</span>
+                                        <br>
+                                    {% else %}
+                                        <i class="bi bi-exclamation-octagon"></i>
+                                        <span style="font-weight: bold"
+                                              class="infos">  وضعیت دوره : به اتمام رسیده</span>
+                                        <br>
+                                    {% endif %}
+                                    <lord-icon
+                                            src="https://cdn.lordicon.com/kbtmbyzy.json"
+                                            trigger="hover"
+                                            colors="primary:#121331,secondary:#08a88a"
+                                            stroke="85"
+                                            style="width:32px;height:32px">
+                                    </lord-icon>
+                                    <span style="font-weight: bold"
+                                          class="infos">  تاریخ ایجاد دوره : {{ course.get_jalali_date }}</span>
+                                    <br>
+                                    <lord-icon
+                                            src="https://cdn.lordicon.com/gqzfzudq.json"
+                                            trigger="hover"
+                                            colors="primary:#121331,secondary:#08a88a"
+                                            style="width:32px;height:32px">
+                                    </lord-icon>
+                                    <span style="font-weight: bold" class="infos">  زبان : فارسی</span>
+                                    <br>
+                                    <lord-icon
+                                            src="https://cdn.lordicon.com/dxjqoygy.json"
+                                            trigger="hover"
+                                            colors="primary:#121331,secondary:#08a88a"
+                                            style="width:32px;height:32px">
+                                    </lord-icon>
+                                    <span style="font-weight: bold"
+                                          class="infos">    تعداد دانشجو ها : {{ students_count }}</span>
+                                    <br>
+                                    {% if sessions %}
+                                        <lord-icon
+                                                src="https://cdn.lordicon.com/jvucoldz.json"
+                                                trigger="hover"
+                                                colors="primary:#121331,secondary:#08a88a"
+                                                style="width:32px;height:32px">
+                                        </lord-icon>
+                                        <span style="font-weight: bold"
+                                              class="infos">    تعداد : {{ course.get_files_count }} فایل منتشر شده</span>
+                                        <br>
+                                    {% endif %}
+
+                                    <lord-icon
+                                            src="https://cdn.lordicon.com/gqdnbnwt.json"
+                                            trigger="hover"
+                                            colors="primary:#121331,secondary:#08a88a"
+                                            style="width:32px;height:32px">
+                                    </lord-icon>
+                                    <span style="font-weight: bold"
+                                          class="infos">    سطح دوره : {{ course_level }} </span>
+                                    <br>
+                                </div>
+                                {% if course.course_discount > 0 %}
+                                    <div style="margin-top:10px;background-color: #f9f9f9;border: #f9f9f9 1px ridge;border-radius: 10px;height: 60px">
+                                        <strong style="font-size: 20px;right: 0;margin-left: 60px;position: relative;top: 15px"
+                                                class="infos">قیمت : </strong>
+                                        <span style="width: auto;margin-right: 60px;position: relative;bottom: 10px"
+                                              class=" mb-8pt price_part"><del
+                                                class="infos" style="font-size:16px;padding: 10px;">
+                                    {{ course.get_course_price_persian }} </del></span>
+                                        <div style="margin-top:10px;position: relative;bottom: 25px">
+                                            <span style=";font-size: 20px"
+                                                  class="infos">{{ course.get_course_final_price_persian }} </span>
+                                            <span class="infos">تومان</span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {% if course.final_price == 0 %}
+                                        <div style="background-color: #f9f9f9;border: #f9f9f9 1px ridge;border-radius: 10px">
+                                            <strong style="font-size: 20px;right: 0;margin-left: 60px;position: relative"
+                                                    class="infos">قیمت : </strong>
+                                            <span style="width: auto;margin-right: 60px;top: 5px"
+                                                  class=" mb-8pt price_part"><span
+                                                    class="infos" style="font-size:20px;padding: 10px;">
+                                    رایگان</span></span>
+                                        </div>
+                                    {% else %}
+                                        <div style="background-color: #f9f9f9;border: #f9f9f9 1px ridge;border-radius: 10px">
+                                            <strong style="font-size: 20px;right: 0;margin-left: 60px;position: relative"
+                                                    class="infos">قیمت : </strong>
+                                            <span style="width: auto;margin-right: 60px;top: 5px"
+                                                  class=" mb-8pt price_part"><span
+                                                    class="infos" style="font-size:20px;padding: 10px;">
+                                    {{ course.get_course_price_persian }} تومان</span></span>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
+                                <br>
+                                <div style="position: initial">
+
+                                    {% if is_bought == True %}
+                                        <p class="infos" style="font-size: medium;color: #20c997">شما این دوره را
+                                            خریداری کرده اید</p>
+                                    {% elif course.creator == request.user %}
+                                        <p class="infos" style="font-size: medium;color: black">شما مدرس این دوره
+                                            هستید</p>
+                                    {% else %}
+                                        {% if course.final_price == 0 %}
+                                            <a href="/freecourse/buy/{{ course.id }}?next=/Courses-List/{{ course.id }}/{{ course.name }}"
+                                               style="background-color: #43f061;font-size: large;border-radius: 50px"
+                                               class="btn btn-block mb-8pt price_part"><i
+                                                    style="color: white;position:relative;left: 50px"
+                                                    class="fa fa-credit-card"></i><strong
+                                                    style="color: white;font-weight: bold"> ثبت نام در دوره</strong></a>
+                                        {% else %}
+                                            <a href="/payment/{{ course.id }}"
+                                               style="background-color: #43f061;font-size: large;border-radius: 50px"
+                                               class="btn btn-block mb-8pt price_part"><i
+                                                    style="color: white;position:relative;left: 50px"
+                                                    class="fa fa-credit-card"></i><strong
+                                                    style="color: white;font-weight: bold"> ثبت نام در دوره</strong></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                {% if not request.user.is_authenticated %}
+                                    <p class="mb-0 price_part">ثبت نام کردی؟ <a href="/Login">ورود</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-section bg-alt border-bottom-2">
+
+
+            <div class="container page__container">
+                <div class="row ">
+                    <div class="col-md-7">
+                        <div class="page-separator">
+                            <div class="page-separator__text"><span class="infos">درباره دوره</span></div>
+                        </div>
+                        <span class="infos">{{ course.about_course|safe }}</span>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="page-separator">
+                            <div style="font-size: medium" class="page-separator__text bg-alt"><span class="infos">چه چیزی یاد میگیری</span>
+                            </div>
+                        </div>
+                        <span style="font-size: medium" class="infos">{{ course.what_you_learn|safe }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="page-section bg-alt border-bottom-2">
+
+
+            <div class="container page__container">
+                <div class="page-separator">
+                    <div class="page-separator__text">نظرات دانشجویان</div>
+                </div>
+
+                <form method="post" action="/Courses-List/{{ course.id }}/{{ course.name }}">
+                    {% csrf_token %}
+                    <div class="col-md-offset-6 text-center">
+                        <p class="infos" style="font-size: medium;">کامنت بذارید</p>
+                        <label style="font-size: medium" class="infos"
+                               for="{{ comments.comment.id_for_label }}">{{ comments.comment.label }}</label>
+                        {% for error in comments.comment.errors %}
+                            <p class="infos bg badge-danger" style="font-size: medium;padding: 5px 10px">{{ error }}</p>
+                        {% endfor %}
+                        {{ comments.comment }}
+                        <br>
+                        <button type="submit" class="btn btn-primary infos">
+                            ثبت
+                        </button>
+                    </div>
+                </form>
+                <hr>
+                {% for comment in cmnts %}
+                    <div class="pb-16pt mb-16pt border-bottom row">
+                        <div class="col-md-3 mb-16pt mb-md-0">
+                            <div class="d-flex">
+
+                                <div class="flex">
+                                    <p class="small text-muted m-0">{{ comment.get_created_time }}</p>
+                                    <p class="card-title">{{ comment.user.get_full_name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <p class="text-70 mb-0 infos" style="font-size: medium">{{ comment.comment }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+        {% include 'base/drawer.html' %}
+
+
+    </div>
+    {% include 'base/Footer.html' %}
+{% endblock %}
+{% block script %}
+    <script>
+        {% for session in sessions %}
+            function accordions_{{ session.id }}() {
+                if (document.getElementById("first-toggle-{{ session.id }}").classList.item(1) === 'collapsed') {
+                    document.getElementById("keyboard-arrow-{{ session.id }}").innerHTML = "keyboard_arrow_down"
+                } else {
+                    document.getElementById("keyboard-arrow-{{ session.id }}").innerHTML = "keyboard_arrow_up"
+                }
+            }
+        {% endfor %}
+        function accordions_add() {
+            if (document.getElementById("first-toggle-add").classList.item(1) === 'collapsed') {
+                document.getElementById("keyboard-arrow-add").innerHTML = "keyboard_arrow_down"
+            } else {
+                document.getElementById("keyboard-arrow-add").innerHTML = "keyboard_arrow_up"
+            }
+        }
+    </script>
+    <script>
+        {% for session in sessions %}
+            function delete_{{ session.id }}() {
+                Swal.fire({
+                    title: 'آیا از حدف فصل اطمینان دارید؟ ویدیو های این فصل هم حذف میشوند.',
+                    confirmButtonText: "<a href='/delete_session/{{ session.id }}?next={{ request.get_full_path }}' style='color:white'>حذف<a/>",
+                })
+            }
+        {% endfor %}
+    </script>
+
+{% endblock %}

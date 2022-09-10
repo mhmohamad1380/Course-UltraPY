@@ -1,0 +1,112 @@
+{% load static %}
+<div class="mdk-drawer js-mdk-drawer" id="default-drawer">
+    <div class="mdk-drawer__content">
+        <div class="sidebar sidebar-dark-dodger-blue sidebar-left" data-perfect-scrollbar>
+
+
+            <div class="d-flex align-items-center navbar-height">
+                <form action="fixed-index.html" class="search-form search-form--black mx-16pt pr-0 pl-16pt">
+                    <input type="text" class="form-control pl-0" placeholder="Search">
+                    <button class="btn" type="submit"><i class="material-icons">search</i></button>
+                </form>
+            </div>
+
+
+            <a style="border-radius: 50px" href="fixed-index.html" class="sidebar-brand ">
+                <!-- <img class="sidebar-brand-icon" src="assets/images/illustration/student/128/white.svg" alt="Luma"> -->
+
+                <span style="border-radius: 50px" class="avatar avatar-xl sidebar-brand-icon h-auto">
+
+                        <span style="border-radius: 50px;width: 80px;height: 80px;" class="avatar-title"><img
+                                src="{% static 'assets/images/ultra.png' %}"
+                                class="img-fluid"
+                                alt="logo"/></span>
+
+                    </span>
+
+                <span>Ultra PY</span>
+            </a>
+
+
+            <center>
+                {% if request.user.is_authenticated %}
+                    <div style="border: 2px ridge #303956;background-color: white;border-radius: 50px;padding: 5px 10px">
+                        <span style="font-size: small;font-family:Verdana;font-weight: 50;color: #303956;padding: 5px 10px">Welcome {{ request.user.username }}</span>
+                    </div>
+                {% endif %}
+                <span class="infos">نقش شما :</span>
+                {% if request.user.is_teacher == True %}
+                    <h2 style="border: #20c997 2px dotted;width: 100px " class="sidebar-heading infos">استاد</h2>
+                {% elif request.user.is_teacher == False %}
+                    <h2 style="border: #20c997 2px dotted;width: 100px " class="sidebar-heading infos">دانشجو</h2>
+                {% else %}
+                    <h2 style="border: #20c997 2px dotted;width: 200px " class="sidebar-heading infos">وارد نشده</h2>
+                {% endif %}
+            </center>
+            <ul class="sidebar-menu">
+
+
+                <li class="sidebar-menu-item active">
+                    <a class="sidebar-menu-button" href="/">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                        <span class="sidebar-menu-text infos">خانه</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button" href="/Courses-List">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
+                        <span class="sidebar-menu-text infos">دوره ها</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button js-sidebar-collapse collapsed" data-toggle="collapse"
+                       href="#student_menu" aria-expanded="false">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
+                        <span class="infos" style="font-size: medium">حساب کاربری</span>
+                        <span class="ml-auto sidebar-menu-toggle-icon"></span>
+                    </a>
+                    <ul class="sidebar-submenu sm-indent collapse" id="student_menu" style="">
+                        {% if request.user.is_authenticated %}
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button" href="/Account/My-Courses">
+                                    <i class="bi bi-card-checklist"></i>
+                                    <span style="margin-right: 17px" class="sidebar-menu-text infos">دوره های من</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button" href="/Favorites">
+                                    <i class="bi bi-heart"></i>
+                                    <span style="margin-right: 17px" class="sidebar-menu-text infos">علاقه مندی ها</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button" href="/logout?next={{ request.path }}">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span style="margin-right: 17px" class="sidebar-menu-text infos">خروج</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button" href="/Login">
+                                    <i class="bi bi-box-arrow-in-left"></i>
+                                    <span class="sidebar-menu-text infos">ورود</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button" href="/Register">
+                                    <i class="bi bi-clipboard-plus"></i>
+                                    <span class="sidebar-menu-text infos">ثبت نام</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                </li>
+
+            </ul>
+
+
+        </div>
+    </div>
+</div>

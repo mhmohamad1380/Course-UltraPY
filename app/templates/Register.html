@@ -1,0 +1,102 @@
+{% extends 'base/_MainLayout.html' %}
+{% block title %}
+    ثبت نام
+{% endblock %}
+{% block head %}
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{% endblock %}
+{% block content %}
+
+    <div class="preloader" style="display: none;">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+
+    <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push="" data-responsive-width="992px"
+         data-domfactory-upgraded="mdk-drawer-layout">
+        <div class="mdk-drawer-layout__content page-content" style="transform: translate3d(0px, 0px, 0px);">
+
+
+            {% include 'base/Header_other.html' %}
+
+
+            <div class="pt-32pt pt-sm-64pt pb-32pt">
+                <div class="container page__container">
+                    <form action="/Register" class="col-md-5 p-0 mx-auto" method="post">
+                        {% csrf_token %}
+                        {{ register_form.captcha }}
+                        <div class="form-group">
+                            {% for error in register_form.username.errors %}
+                                <p class="badge bg-danger infos"
+                                   style="font-size:16px;padding: 5px 10px">{{ error }}</p>
+                            {% endfor %}
+                            <br>
+                            <label class="form-label infos"
+                                   for="{{ register_form.username.id_for_label }}">{{ register_form.username.label }}</label>
+                            {{ register_form.username }}
+                        </div>
+                        <div class="form-group">
+                            {% for error in register_form.email.errors %}
+                                <p class="badge bg-danger infos"
+                                   style="font-size:16px;padding: 5px 10px">{{ error }}</p>
+                            {% endfor %}
+                            <br>
+                            <label class="form-label infos"
+                                   for="{{ register_form.email.id_for_label }}">{{ register_form.email.label }}</label>
+                            {{ register_form.email }}
+
+                        </div>
+                        <div class="form-group">
+                            {% for error in register_form.password.errors %}
+                                <p class="badge bg-danger infos"
+                                   style="font-size:16px;padding: 5px 10px">{{ error }}</p>
+                            {% endfor %}
+                            <br>
+                            <label class="form-label infos"
+                                   for="{{ register_form.password.id_for_label }}">{{ register_form.password.label }}</label>
+                            {{ register_form.password }}
+
+                        </div>
+                        <div class="form-group">
+                            {% for error in register_form.re_password.errors %}
+                                <p class="badge bg-danger infos"
+                                   style="font-size:16px;padding: 5px 10px">{{ error }}</p>
+                            {% endfor %}
+                            <br>
+                            <label class="form-label infos"
+                                   for="{{ register_form.re_password.id_for_label }}">{{ register_form.re_password.label }}</label>
+                            {{ register_form.re_password }}
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary infos">ثبت نام</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="page-separator justify-content-center m-0">
+                <div class="page-separator__text">یا ثبت نام کنید با :</div>
+            </div>
+            <div class="bg-body pt-32pt pb-32pt pb-md-64pt text-center">
+                <div class="container page__container">
+                    <a href="{% url 'social:begin' 'google-oauth2' %}"
+                       class="btn btn-secondary btn-block-xs">+Google</a>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- // END drawer-layout__content -->
+
+
+        <!-- drawer -->
+        {% include 'base/drawer.html' %}
+        <!-- // END drawer -->
+
+
+    </div>
+    <!-- // END drawer-layout -->
+    {% include 'base/Footer.html' %}
+
+{% endblock %}

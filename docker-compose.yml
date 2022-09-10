@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: ultrapy_app
+    build: ./app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python3 manage.py makemigrations --noinput &&
+             while ! python3 manage.py migrate --noinput ; do sleep 1 ; done && 
+             python3 manage.py collectstatic --noinput &&
+             python3 manage.py createsuperuser --user admin --noinput --email admin@admin.com --noinput ;
+             python3 manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_PORT=5432
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=postgresqlpassword
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=154830391470-cb7vhgoofrnctea6fiavol1fq9nnkbhv.apps.googleusercontent.com
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=4H6-Jd7WfbGpbPAvJdfLwVeT
+      - RECAPTCHA_PUBLIC_KEY=6LfpwcEhAAAAAAqQ8y4H-hQUNs_IXk1lICBCahjT
+      - RECAPTCHA_PRIVATE_KEY=6LfpwcEhAAAAAMeeQLC_I4t4Gfnq_22ZHwqTkaSk
+      - EMAIL_HOST_PASSWORD=mjlzdhbztfesktmk
+    depends_on:
+      - redis
+      - db
+  db:
+    container_name: drf_db
+    image: postgres:latest
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgresqlpassword
+
+  redis:
+    container_name: ultrapy_redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+  celery:
+    container_name: ultrapy_celery
+    restart: always
+    build: ./app
+    command: >
+      sh -c "celery -A Course worker -l INFO"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=postgresqlpassword
+    depends_on:
+      - app
+      - redis
+      - db

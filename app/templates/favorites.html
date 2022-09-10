@@ -1,0 +1,124 @@
+{% extends 'base/_MainLayout.html' %}
+{% load static %}
+{% block title %}علاقه مندی ها{% endblock %}
+{% block head %}
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{% endblock %}
+{% block content %}
+    {% include 'base/Header_other.html' %}
+    <div class="mdk-header-layout__content page-content " style="padding-top: 64px;">
+
+
+        <div data-push="" data-responsive-width="992px" class="mdk-drawer-layout js-mdk-drawer-layout"
+             data-domfactory-upgraded="mdk-drawer-layout">
+            <div class="mdk-drawer-layout__content" style="transform: translate3d(0px, 0px, 0px);">
+
+
+                <div class="page-section">
+                    <div class="container page__container">
+
+
+
+
+                        <div class="page-separator">
+                            <div class="page-separator__text">علاقه مندی ها</div>
+                        </div>
+
+
+                        <div class="row card-group-row">
+
+                            {% for course in courses %}
+                                <div class="col-md-6 col-lg-4 col-xl-6 card-group-row__col">
+
+                                <div style="height: 350px"
+                                     class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                                     data-toggle="popover" data-trigger="click">
+
+
+                                    <a href="/Courses-List/{{ course.favorite_courses.id }}/{{ course.favorite_courses.get_absolute_url }}"
+                                       class="js-image" data-position="center"
+                                       data-height="auto" data-domfactory-upgraded="image"
+                                       style="display: block; position: relative; overflow: hidden; background-image: url({{ course.favorite_courses.image.url }}); background-size: cover; background-position: center; height: 250px;">
+
+                                    </a>
+
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex">
+                                                <a class="card-title infos" style="font-size: large"
+                                                   href="/Courses-List/{{ course.favorite_courses.id }}/{{ course.favorite_courses.get_absolute_url }}">{{ course.favorite_courses.name }}</a>
+                                                <small style="font-size: medium"
+                                                       class="infos text-50 font-weight-bold mb-4pt ">{{ course.favorite_courses.get_creator_fullname }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto d-flex align-items-center">
+                                                <span class="material-icons icon-16pt text-black-50 mr-4pt">access_time</span>
+                                                {% if course.total_duration %}
+                                                <p class="flex text-black-50 lh-1 mb-0"><small style="font-size: medium"
+                                                                                               class="infos">{{ course.favorite_courses.total_duration }}منتشر
+                                                    شده </small></p>
+                                                {% else %}
+                                                <p class="flex text-black-50 lh-1 mb-0 infos"><small style="font-size: medium"
+                                                                                               class="infos">هنوز ویدیویی منتشر نشده است</small></p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <span class="material-icons icon-16pt text-black-50 mr-4pt">play_circle_outline</span>
+                                                <p class="flex text-black-50 lh-1 mb-0 infos"><small
+                                                        style="font-size: medium">{{ course.favorite_courses.videos_count }} درس منتشر شده</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+{#                        <div class="mb-32pt">#}
+{##}
+{#                            <ul class="pagination justify-content-start pagination-xsm m-0">#}
+{#                                <li class="page-item">#}
+{#                                    <a class="page-link" href="#" aria-label="Previous">#}
+{#                                        <span aria-hidden="true" class="material-icons">chevron_right</span>#}
+{#                                        <span class="text">قبلی</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li class="page-item">#}
+{#                                    <a class="page-link" href="#" aria-label="Page 1">#}
+{#                                        <span>1</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li class="page-item">#}
+{#                                    <a class="page-link" href="#" aria-label="Page 2">#}
+{#                                        <span>2</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li class="page-item">#}
+{#                                    <a class="page-link" href="#" aria-label="Next">#}
+{#                                        <span class="text">بعدی</span>#}
+{#                                        <span aria-hidden="true" class="material-icons">chevron_left</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{##}
+{#                        </div>#}
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    {% include 'base/drawer.html' %}
+
+    </div>
+
+{% endblock %}
